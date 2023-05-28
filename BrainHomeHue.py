@@ -2,6 +2,8 @@ from phue import Bridge
 import time
 import os
 import random
+import pystray
+import PIL.Image
 #checking system for clear cmd
 from turtle import *
 if os.name in ('nt', 'dos'):
@@ -12,7 +14,42 @@ else:
 def clearcmd():
     os.system(command)
 
+image = PIL.Image.open('ananas_logo_temp.jpg') #error with opening add whole dict
 
+def turn_on_all_back(icon, item):
+    for l in lights:
+        l.on = True
+def turn_off_all_back(icon, item):
+    for l in lights:
+        l.on = False
+def party_mode_back(icon, item):
+    print('PARTY MODEE!')
+    i=0
+    for light in lights_list:
+        while i != 15:
+            light.hue = random.randint(0, 20000)
+            time.sleep(0.5)
+            i = i + 1
+def blink_mode(icon, item):
+    for l in lights:
+        l.brightness = 20
+        time.sleep(0.5)
+        l.brightness = 254
+
+    
+def exit_background(icon, item):
+    icon.stop()
+
+def on_clicked(icon, item):
+    print('button works')
+
+icon = pystray.Icon('BrainHomeHue', image, menu=pystray.Menu(
+    pystray.MenuItem('Turn on ALL', turn_on_all_back),
+    pystray.MenuItem('Turn off ALL', turn_off_all_back),
+    pystray.MenuItem('Party mode!', party_mode_back),
+    pystray.MenuItem('Blink', blink_mode),
+    pystray.MenuItem('Exit', exit_background)
+))
 
 
 b = Bridge('192.168.0.103')
@@ -44,6 +81,20 @@ def startup():
         l.brightness = 254
 
 
+def turn_on_all():
+    for l in lights:
+        l.on = True
+def turn_off_all():
+    for l in lights:
+        l.on = False
+def party_mode():
+    print('PARTY MODEE!')
+    i=0
+    for light in lights_list:
+        while i != 15:
+            light.hue = random.randint(0, 20000)
+            time.sleep(0.5)
+            i = i + 1
 
 startup()
 
@@ -57,17 +108,17 @@ while True:
     print('4-Turn on chosen light')
     print('5-Set brightness to chosen light')
     print('6-Set brightness of all lights')
-    print('7-Party mode')
-    print('0-Turn off program')
+    print('7-Create group')
+    print('8-List of groups')
+    print('9-Party mode')
+    print('0-Turn off program(and add it to taskbar)')
     #koniec menu
     menu_dec = int(input('Write number from menu here:'))
     if menu_dec == 1:
-        for l in lights:
-            l.on = False
+        turn_off_all()
         clearcmd()
     elif menu_dec == 2:
-        for l in lights:
-            l.on = True
+        turn_on_all()
         clearcmd()
     elif menu_dec == 3:
         print(light_names)
@@ -92,13 +143,15 @@ while True:
         for l in lights:
             l.brightness = valuebrightness
     elif menu_dec == 7:
-        print('PARTY MODEE!')
-        i=0
-        for light in lights_list:
-            while i != 15:
-                light.hue = random.randint(0, 20000)
-                time.sleep(1)
-                i = i + 1
+        namegroup = input('Input name of the group:')
+        print(light_names)
+        idlights = input('Input id of lights:')
+        b.create_group(namegroup, [idlights])
+    elif menu_dec == 8:
+        b.get_group(1, 'name')
+        time.sleep(5)
+    elif menu_dec == 9:
+        party_mode()
         clearcmd()
     elif menu_dec == 0:
         break
@@ -106,5 +159,7 @@ while True:
         colorhuenum = int(input(':'))
         light_names['Led'].hue = colorhuenum
         time.sleep(10)
+clearcmd()
+icon.run()
 startup()
 clearcmd()
