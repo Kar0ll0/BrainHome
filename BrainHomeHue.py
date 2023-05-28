@@ -1,6 +1,7 @@
 from phue import Bridge
 import time
 import os
+import random
 #checking system for clear cmd
 from turtle import *
 if os.name in ('nt', 'dos'):
@@ -10,6 +11,8 @@ else:
 #===
 def clearcmd():
     os.system(command)
+
+
 
 
 b = Bridge('192.168.0.103')
@@ -25,7 +28,7 @@ b.get_api()
 
 # Get a dictionary with the light id as the key
 
-
+lights_list = b.get_light_objects('list')
 light_names = b.get_light_objects('name')
 lights = b.lights
 
@@ -52,7 +55,11 @@ while True:
     print('2-Turn on all lights')
     print('3-Turn off chosen light')
     print('4-Turn on chosen light')
+    print('5-Set brightness to chosen light')
+    print('6-Set brightness of all lights')
+    print('7-Party mode')
     print('0-Turn off program')
+    #koniec menu
     menu_dec = int(input('Write number from menu here:'))
     if menu_dec == 1:
         for l in lights:
@@ -74,9 +81,30 @@ while True:
         for l in lights:
             light_names[namebulb_on].on = True
         clearcmd()
+    elif menu_dec == 5:
+        print(light_names)
+        namebulb_brightness = input('Name of the bulb/led:')
+        valuebrightness = int(input('Brightness(0-254):'))
+        for l in lights:
+            light_names[namebulb_brightness].brightness = valuebrightness
+    elif menu_dec == 6:
+        valuebrightness = int(input('Brightness(0-254):'))
+        for l in lights:
+            l.brightness = valuebrightness
+    elif menu_dec == 7:
+        print('PARTY MODEE!')
+        i=0
+        for light in lights_list:
+            while i != 15:
+                light.hue = random.randint(0, 20000)
+                time.sleep(1)
+                i = i + 1
+        clearcmd()
     elif menu_dec == 0:
         break
-    elif menu_dec == 99:
-        b.set_light(1, 'bri', 254, transitiontime=1)
+    elif menu_dec == 99: #testing colors
+        colorhuenum = int(input(':'))
+        light_names['Led'].hue = colorhuenum
+        time.sleep(10)
 startup()
 clearcmd()
