@@ -3,6 +3,8 @@
 Philips Hue x phue 
 
 phue: https://github.com/studioimaginaire/phue
+(To use BrainHomeHue you need to install phue with pip)
+
 
 In this project I used phue library for python to code it. 
 
