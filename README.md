@@ -1,6 +1,6 @@
 # BrainHome - Philips Hue
 
-Philips Hue x phue 
+BrainHome x phue 
 
 phue: https://github.com/studioimaginaire/phue
 (To use BrainHomeHue you need to install phue with pip)
