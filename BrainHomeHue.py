@@ -5,7 +5,6 @@ import random
 import pystray
 import PIL.Image
 #checking system for clear cmd
-from turtle import *
 if os.name in ('nt', 'dos'):
     command = 'cls'
 else:
