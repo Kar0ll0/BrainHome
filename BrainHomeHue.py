@@ -31,6 +31,7 @@ def party_mode_back(icon, item):
             i = i + 1
 def blink_mode(icon, item):
     for l in lights:
+        l.on = True
         l.brightness = 20
         time.sleep(0.5)
         l.brightness = 254
