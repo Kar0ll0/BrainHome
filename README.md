@@ -17,3 +17,6 @@ Functions:
 -background mode (access by typing 0)
 
 Also you can access some features in taskbar view!
+
+UPDATE:
+This week I will make a seperate branch/repository with a lightweight version of this app that is only accessible from taskbar view.
